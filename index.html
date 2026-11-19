@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korzinka Online — Yangi mahsulotlar eshigingizgacha</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>tailwind.config={theme:{extend:{colors:{brand:{50:'#f0fdf4',500:'#22a34a',600:'#16863c',700:'#136c33',900:'#0f2a1a'},sun:{400:'#fb923c',500:'#f97316'}}}}}</script>
+<style>
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#f7f8f5}
+.slide{transition:opacity .7s,transform .7s}
+.card{transition:transform .25s,box-shadow .25s}.card:hover{transform:translateY(-6px);box-shadow:0 18px 35px -12px rgba(22,134,60,.35)}
+.card img{transition:transform .5s}.card:hover img{transform:scale(1.08)}
+#drawer{transition:transform .35s ease}
+.pop{animation:pop .3s}@keyframes pop{50%{transform:scale(1.5)}}
+.fade{animation:fade .4s}@keyframes fade{from{opacity:0;transform:translateY(10px)}}
+</style>
+</head>
+<body class="text-gray-800">
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
+    <a href="#top" class="flex items-center gap-2 shrink-0">
+      <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white grid place-items-center text-lg shadow"><i class="fa-solid fa-basket-shopping"></i></span>
+      <span class="font-extrabold text-xl text-brand-700">Korzinka<span class="text-sun-500"> Online</span></span>
+    </a>
+    <nav class="hidden lg:flex gap-1 ml-6 text-sm font-semibold">
+      <a href="#top" class="px-3 py-2 rounded-lg hover:bg-brand-50 hover:text-brand-600">Bosh sahifa</a>
+      <a href="#katalog" class="px-3 py-2 rounded-lg hover:bg-brand-50 hover:text-brand-600">Katalog</a>
+      <a href="#chegirma" onclick="showSale()" class="px-3 py-2 rounded-lg hover:bg-brand-50 hover:text-brand-600">Chegirmalar</a>
+      <a href="#xarita" class="px-3 py-2 rounded-lg hover:bg-brand-50 hover:text-brand-600">Aloqa</a>
+    </nav>
+    <div class="flex-1 hidden md:flex relative max-w-md ml-auto">
+      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      <input id="search" type="text" placeholder="Mahsulot qidirish..." class="w-full pl-11 pr-4 py-2.5 rounded-full bg-gray-100 focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none text-sm transition">
+    </div>
+    <div class="flex items-center gap-2 ml-auto md:ml-0">
+      <button onclick="toggleWishFilter()" class="relative w-11 h-11 rounded-full hover:bg-red-50 text-gray-600 hover:text-red-500 transition" title="Tanlanganlar">
+        <i class="fa-solid fa-heart text-lg"></i>
+        <span id="wishBadge" class="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-xs font-bold grid place-items-center">0</span>
+      </button>
+      <button onclick="toggleCart(true)" class="relative w-11 h-11 rounded-full bg-brand-500 hover:bg-brand-600 text-white shadow transition" title="Savat">
+        <i class="fa-solid fa-cart-shopping text-lg"></i>
+        <span id="cartBadge" class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-sun-500 text-white text-xs font-bold grid place-items-center">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="md:hidden px-4 pb-3 relative">
+    <i class="fa-solid fa-magnifying-glass absolute left-8 top-1/2 -translate-y-1/2 -mt-1.5 text-gray-400"></i>
+    <input id="searchM" type="text" placeholder="Mahsulot qidirish..." class="w-full pl-11 pr-4 py-2.5 rounded-full bg-gray-100 outline-none text-sm focus:ring-2 focus:ring-brand-500">
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO CAROUSEL -->
+<section class="max-w-7xl mx-auto px-4 mt-6">
+  <div class="relative h-72 sm:h-96 rounded-3xl overflow-hidden shadow-xl" id="hero">
+    <div class="slide absolute inset-0 bg-gradient-to-r from-brand-700 via-brand-500 to-lime-400 flex items-center">
+      <div class="px-6 sm:px-14 text-white max-w-xl">
+        <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-3">Haftalik aksiya</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">Mevalar va sabzavotlarga <span class="text-yellow-300">50% gacha</span> chegirma!</h2>
+        <p class="mt-3 text-white/90 hidden sm:block">Har kuni yangi uzilgan, tabiiy va mazali.</p>
+        <button onclick="goCat('Mevalar')" class="mt-5 bg-sun-500 hover:bg-orange-600 hover:scale-105 transition px-7 py-3 rounded-full font-bold shadow-lg">Hozir xarid qilish <i class="fa-solid fa-arrow-right ml-1"></i></button>
+      </div>
+    </div>
+    <div class="slide absolute inset-0 bg-gradient-to-r from-orange-600 via-sun-500 to-amber-300 flex items-center opacity-0 pointer-events-none">
+      <div class="px-6 sm:px-14 text-white max-w-xl">
+        <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-3">Yangi mahsulotlar</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">Sut mahsulotlari <span class="text-yellow-100">30% arzon!</span></h2>
+        <p class="mt-3 text-white/90 hidden sm:block">Fermadan to'g'ridan-to'g'ri sizning dasturxoningizga.</p>
+        <button onclick="goCat('Sut mahsulotlari')" class="mt-5 bg-brand-700 hover:bg-brand-900 hover:scale-105 transition px-7 py-3 rounded-full font-bold shadow-lg">Hozir xarid qilish <i class="fa-solid fa-arrow-right ml-1"></i></button>
+      </div>
+    </div>
+    <div class="slide absolute inset-0 bg-gradient-to-r from-rose-700 via-red-500 to-orange-400 flex items-center opacity-0 pointer-events-none">
+      <div class="px-6 sm:px-14 text-white max-w-xl">
+        <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-3">Hafta taklifi</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">Go'sht va baliq <span class="text-yellow-200">40% gacha</span> chegirmada!</h2>
+        <p class="mt-3 text-white/90 hidden sm:block">Sifat nazoratidan o'tgan, doim yangi.</p>
+        <button onclick="goCat('Go\'sht va baliq')" class="mt-5 bg-white text-red-600 hover:scale-105 transition px-7 py-3 rounded-full font-bold shadow-lg">Hozir xarid qilish <i class="fa-solid fa-arrow-right ml-1"></i></button>
+      </div>
+    </div>
+    <button onclick="slide(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/30 hover:bg-white/60 text-white backdrop-blur transition"><i class="fa-solid fa-chevron-left"></i></button>
+    <button onclick="slide(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/30 hover:bg-white/60 text-white backdrop-blur transition"><i class="fa-solid fa-chevron-right"></i></button>
+    <div id="dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="max-w-7xl mx-auto px-4 mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+  <div class="bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm"><i class="fa-solid fa-truck-fast text-2xl text-brand-500"></i><div><b>Tezkor yetkazish</b><p class="text-gray-500 text-xs">60 daqiqa ichida</p></div></div>
+  <div class="bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm"><i class="fa-solid fa-leaf text-2xl text-brand-500"></i><div><b>Doim yangi</b><p class="text-gray-500 text-xs">Sifat kafolati</p></div></div>
+  <div class="bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm"><i class="fa-solid fa-percent text-2xl text-sun-500"></i><div><b>Qulay narxlar</b><p class="text-gray-500 text-xs">Har kuni aksiyalar</p></div></div>
+  <div class="bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm"><i class="fa-solid fa-shield-halved text-2xl text-sun-500"></i><div><b>Xavfsiz to'lov</b><p class="text-gray-500 text-xs">Naqd yoki karta</p></div></div>
+</section>
+
+<!-- CATALOG -->
+<section id="katalog" class="max-w-7xl mx-auto px-4 mt-10 scroll-mt-24">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <h2 id="catTitle" class="text-2xl sm:text-3xl font-extrabold">Mahsulotlar katalogi</h2>
+    <span id="count" class="text-sm text-gray-500"></span>
+  </div>
+  <div id="chips" class="flex gap-2 overflow-x-auto py-4"></div>
+  <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5"></div>
+  <p id="empty" class="hidden text-center text-gray-500 py-16"><i class="fa-regular fa-face-frown text-4xl block mb-3"></i>Hech narsa topilmadi</p>
+</section>
+</main>
+
+<!-- XARITA -->
+<section id="xarita" class="max-w-7xl mx-auto px-4 mt-16 scroll-mt-24">
+  <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+    <h2 class="text-2xl sm:text-3xl font-extrabold"><i class="fa-solid fa-location-dot text-sun-500 mr-2"></i>Do'konimiz xaritada</h2>
+    <a href="https://www.google.com/maps/search/?api=1&query=Korzinka+Islom+Karimov+shoh+ko'chasi+Navoiy" target="_blank" class="inline-flex items-center gap-2 bg-brand-500 hover:bg-sun-500 text-white font-semibold px-5 py-2.5 rounded-full shadow transition">
+      <i class="fa-solid fa-diamond-turn-right"></i>Yo'nalish olish
+    </a>
+  </div>
+  <div class="grid lg:grid-cols-3 gap-5">
+    <div class="lg:col-span-2 rounded-3xl overflow-hidden shadow-lg bg-white h-80 sm:h-[26rem]">
+      <iframe
+        src="https://maps.google.com/maps?q=Korzinka+Islom+Karimov+shoh+ko'chasi+Navoiy+shahri&hl=uz&z=16&output=embed"
+        class="w-full h-full border-0" loading="lazy" allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade" title="Korzinka — Navoiy shahri"></iframe>
+    </div>
+    <div class="bg-white rounded-3xl shadow-sm p-6 space-y-4 text-sm">
+      <h3 class="font-bold text-lg">Korzinka — Navoiy shahri</h3>
+      <p><i class="fa-solid fa-location-dot text-sun-500 w-5"></i> Navoiy sh., Islom Karimov shoh ko'chasi, 7-kvartal, 105</p>
+      <p><i class="fa-solid fa-building text-sun-500 w-5"></i> "Shedevr Plaza" mehmonxonasi yaqinida</p>
+      <p><i class="fa-solid fa-clock text-sun-500 w-5"></i> Har kuni 08:00 – 24:00</p>
+      <p><i class="fa-solid fa-phone text-sun-500 w-5"></i> +998 78 140-14-14</p>
+      <a href="tel:+998781401414" class="block text-center bg-brand-50 hover:bg-brand-500 hover:text-white text-brand-700 font-semibold py-3 rounded-xl transition"><i class="fa-solid fa-phone-volume mr-2"></i>Qo'ng'iroq qilish</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="aloqa" class="mt-16 bg-brand-900 text-gray-300 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div>
+      <div class="flex items-center gap-2 text-white font-extrabold text-xl mb-3"><i class="fa-solid fa-basket-shopping text-sun-400"></i> Korzinka Online</div>
+      <p class="text-sm leading-relaxed">Eng yangi va sifatli oziq-ovqat mahsulotlari — qulay narxlarda, tez yetkazib berish bilan.</p>
+      <div class="flex gap-3 mt-5">
+        <a href="https://t.me/" target="_blank" class="w-10 h-10 rounded-full bg-white/10 hover:bg-sky-500 hover:-translate-y-1 grid place-items-center text-white transition"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://instagram.com/" target="_blank" class="w-10 h-10 rounded-full bg-white/10 hover:bg-pink-600 hover:-translate-y-1 grid place-items-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://facebook.com/" target="_blank" class="w-10 h-10 rounded-full bg-white/10 hover:bg-blue-600 hover:-translate-y-1 grid place-items-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-white font-bold mb-3">Bo'limlar</h3>
+      <ul class="space-y-2 text-sm"><li><a href="#top" class="hover:text-sun-400">Bosh sahifa</a></li><li><a href="#katalog" class="hover:text-sun-400">Katalog</a></li><li><a href="#chegirma" onclick="showSale()" class="hover:text-sun-400">Chegirmalar</a></li><li><a href="#xarita" class="hover:text-sun-400">Aloqa</a></li></ul>
+    </div>
+    <div>
+      <h3 class="text-white font-bold mb-3">Aloqa</h3>
+      <ul class="space-y-2 text-sm">
+        <li><i class="fa-solid fa-phone text-sun-400 w-5"></i> +998 71 200-00-00</li>
+        <li><i class="fa-solid fa-envelope text-sun-400 w-5"></i> info@korzinka.uz</li>
+        <li><i class="fa-solid fa-location-dot text-sun-400 w-5"></i> Navoiy sh., Islom Karimov shoh ko'chasi, 105</li>
+        <li><i class="fa-solid fa-clock text-sun-400 w-5"></i> Har kuni 08:00 – 24:00</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="text-white font-bold mb-3">Yangiliklarga obuna bo'ling</h3>
+      <form onsubmit="event.preventDefault();toast('Obuna uchun rahmat!');this.reset()" class="flex rounded-full overflow-hidden bg-white/10 focus-within:ring-2 ring-sun-400">
+        <input required type="email" placeholder="E-mail manzilingiz" class="flex-1 min-w-0 bg-transparent px-4 py-3 text-sm outline-none text-white placeholder-gray-400">
+        <button class="bg-sun-500 hover:bg-orange-600 px-5 text-white transition"><i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+      <p class="text-xs mt-2 text-gray-400">Aksiyalar haqida birinchi bo'lib xabar oling.</p>
+    </div>
+  </div>
+  <div class="border-t border-white/10 py-5 text-center text-xs text-gray-400">© 2026 Korzinka Online. Barcha huquqlar himoyalangan.</div>
+</footer>
+
+<!-- CART DRAWER -->
+<div id="overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+<aside id="drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-2xl translate-x-full flex flex-col">
+  <div class="flex items-center justify-between p-5 border-b">
+    <h2 class="text-xl font-extrabold"><i class="fa-solid fa-cart-shopping text-brand-500 mr-2"></i>Savat</h2>
+    <button onclick="toggleCart(false)" class="w-9 h-9 rounded-full hover:bg-gray-100"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+  <div class="p-5 border-t bg-gray-50">
+    <div class="flex justify-between items-center mb-4"><span class="text-gray-600">Jami summa:</span><span id="total" class="text-2xl font-extrabold text-brand-600">0 so'm</span></div>
+    <button onclick="checkout()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-900 text-white font-bold text-lg shadow-lg hover:shadow-xl transition"><i class="fa-solid fa-circle-check mr-2"></i>Buyurtma berish</button>
+  </div>
+</aside>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-brand-900 text-white px-6 py-3 rounded-full shadow-xl text-sm opacity-0 pointer-events-none transition-all duration-300 translate-y-4"></div>
+
+<script>
+const U=id=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=500&q=75`;
+// [nomi, kategoriya, narx, rasm ID, eski narx (chegirma)]
+const P=[
+["Qizil olma","Mevalar",18000,"1560806887-1e4cd0b6cbd6",24000],
+["Banan","Mevalar",22000,"1571771894821-ce9b6c11b08e"],
+["Qulupnay","Mevalar",45000,"1464965911861-746a04b4bca6",60000],
+["Uzum","Mevalar",32000,"1537640538966-79f369143f8f"],
+["Tarvuz","Mevalar",9000,"1587049352846-4a222e784d38"],
+["Limon","Mevalar",28000,"1590502593747-42a996133562"],
+["Pomidor","Sabzavotlar",15000,"1592924357228-91a4daadcfea",21000],
+["Sabzi","Sabzavotlar",6000,"1598170845058-32b9d6a5da37"],
+["Kartoshka","Sabzavotlar",7500,"1518977676601-b53f82aba655"],
+["Bodring","Sabzavotlar",12000,"1449300079323-02e209d9d3a6"],
+["Piyoz","Sabzavotlar",5000,"1618512496248-a07fe83aa8cb"],
+["Brokkoli","Sabzavotlar",25000,"1459411621453-7b03977f4bfc",32000],
+["Sut 1 litr","Sut mahsulotlari",13000,"1550583724-b2692b85b150"],
+["Pishloq","Sut mahsulotlari",78000,"1486297678162-eb2a19b0a32d",95000],
+["Tuxum (10 dona)","Sut mahsulotlari",24000,"1582722872445-44dc5f7e3c8f"],
+["Qatiq","Sut mahsulotlari",11000,"1488477181946-6428a0291777"],
+["Sariyog'","Sut mahsulotlari",36000,"1589985270826-4b7bb135bc9d"],
+["Non (patir)","Non va qandolat",5000,"1509440159596-0249088772ff"],
+["Kruassan","Non va qandolat",12000,"1555507036-ab1f4038808a"],
+["Shokoladli tort","Non va qandolat",120000,"1578985545062-69928b1d9587",150000],
+["Pechenye","Non va qandolat",16000,"1499636136210-6f4ee915583e"],
+["Shokolad","Non va qandolat",19000,"1511381939415-e44015466834"],
+["Apelsin sharbati","Ichimliklar",17000,"1600271886742-f049cd451bba"],
+["Mineral suv 1.5 l","Ichimliklar",4500,"1548839140-29a749e1cf4d"],
+["Kofe donlari","Ichimliklar",95000,"1559056199-641a0ac8b55e",120000],
+["Ko'k choy","Ichimliklar",22000,"1564890369478-c89ca6d9cde9"],
+["Gazli ichimlik","Ichimliklar",9000,"1622483767028-3f66f32aef97"],
+["Mol go'shti","Go'sht va baliq",98000,"1603048297172-c92544798d5a",120000],
+["Tovuq filesi","Go'sht va baliq",52000,"1604503468506-a8da13d82791"],
+["Losos baliq","Go'sht va baliq",185000,"1519708227418-c8fd9a32b7a2",220000],
+["Guruch (lazer)","Quruq mahsulotlar",16000,"1586201375761-83865001e31c"],
+["Makaron","Quruq mahsulotlar",11000,"1551462147-ff29053bfc14"],
+["Asal","Quruq mahsulotlar",85000,"1587049352851-8d4e89133924",105000],
+["Yong'oq aralashmasi","Quruq mahsulotlar",64000,"1508061253366-f7da158b6d46"]
+].map((p,i)=>({id:i,name:p[0],cat:p[1],price:p[2],img:U(p[3]),old:p[4]||0}));
+
+const cats=["Barchasi",...new Set(P.map(p=>p.cat))];
+let cat="Barchasi",q="",onlySale=false,onlyWish=false;
+let cart=load("kc_cart"),wish=load("kc_wish");
+function load(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return {}}}
+function save(){try{localStorage.setItem("kc_cart",JSON.stringify(cart));localStorage.setItem("kc_wish",JSON.stringify(wish))}catch(e){}}
+const fmt=n=>n.toLocaleString("en-US")+" so'm";
+const $=id=>document.getElementById(id);
+
+function renderChips(){
+  $("chips").innerHTML=cats.map(c=>`<button onclick="goCat('${c.replace(/'/g,"\\'")}')" class="shrink-0 px-5 py-2 rounded-full text-sm font-semibold border transition ${c===cat&&!onlySale&&!onlyWish?'bg-brand-500 text-white border-brand-500 shadow':'bg-white hover:border-brand-500 hover:text-brand-600'}">${c}</button>`).join("");
+}
+function renderGrid(){
+  let list=P.filter(p=>(cat==="Barchasi"||p.cat===cat)&&p.name.toLowerCase().includes(q)&&(!onlySale||p.old)&&(!onlyWish||wish[p.id]));
+  $("count").textContent=list.length+" ta mahsulot";
+  $("empty").classList.toggle("hidden",list.length>0);
+  $("catTitle").textContent=onlySale?"Chegirmadagi mahsulotlar":onlyWish?"Tanlangan mahsulotlar":cat==="Barchasi"?"Mahsulotlar katalogi":cat;
+  $("grid").innerHTML=list.map(p=>`
+  <div class="card fade bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col">
+    <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-orange-50">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">
+      ${p.old?`<span class="absolute top-2 left-2 bg-sun-500 text-white text-xs font-bold px-2 py-1 rounded-full">-${Math.round((1-p.price/p.old)*100)}%</span>`:""}
+      <button onclick="toggleWish(${p.id})" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-white/90 hover:bg-white hover:scale-110 shadow grid place-items-center transition ${wish[p.id]?'text-red-500':'text-gray-400'}"><i class="${wish[p.id]?'fa-solid':'fa-regular'} fa-heart"></i></button>
+    </div>
+    <div class="p-3 sm:p-4 flex flex-col flex-1">
+      <span class="text-xs text-brand-600 font-semibold">${p.cat}</span>
+      <h3 class="font-bold leading-snug mt-0.5">${p.name}</h3>
+      <div class="mt-1.5">${p.old?`<span class="text-xs text-gray-400 line-through mr-1">${p.old.toLocaleString("en-US")}</span>`:""}<span class="font-extrabold text-brand-700">${fmt(p.price)}</span></div>
+      <button onclick="addCart(${p.id})" class="mt-3 w-full py-2.5 rounded-xl bg-brand-500 hover:bg-sun-500 active:scale-95 text-white font-semibold text-sm transition flex items-center justify-center gap-2"><i class="fa-solid fa-cart-plus"></i>Savatga solish</button>
+    </div>
+  </div>`).join("");
+}
+function goCat(c){cat=c;onlySale=false;onlyWish=false;q="";$("search").value=$("searchM").value="";renderChips();renderGrid();$("katalog").scrollIntoView({behavior:"smooth"})}
+function showSale(){cat="Barchasi";onlySale=true;onlyWish=false;renderChips();renderGrid();$("katalog").scrollIntoView({behavior:"smooth"})}
+function toggleWishFilter(){onlyWish=!onlyWish;onlySale=false;renderChips();renderGrid();$("katalog").scrollIntoView({behavior:"smooth"});if(onlyWish&&!Object.keys(wish).length)toast("Hali hech narsa tanlanmagan")}
+function toggleWish(id){wish[id]?delete wish[id]:wish[id]=1;save();updateBadges();renderGrid();toast(wish[id]?"Tanlanganlarga qo'shildi":"Tanlanganlardan olib tashlandi")}
+function addCart(id){cart[id]=(cart[id]||0)+1;save();updateBadges();renderCart();toast(P[id].name+" savatga qo'shildi")}
+function chg(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save();updateBadges();renderCart()}
+function del(id){delete cart[id];save();updateBadges();renderCart()}
+function updateBadges(){
+  const c=Object.values(cart).reduce((a,b)=>a+b,0),w=Object.keys(wish).length;
+  for(const [el,v] of [[$("cartBadge"),c],[$("wishBadge"),w]]){el.textContent=v;el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")}
+}
+function renderCart(){
+  const ids=Object.keys(cart);
+  $("cartItems").innerHTML=ids.length?ids.map(i=>{const p=P[i],n=cart[i];return `
+  <div class="fade flex gap-3 bg-gray-50 rounded-2xl p-3">
+    <div class="w-20 h-20 rounded-xl overflow-hidden bg-brand-50 grid place-items-center shrink-0"><img src="${p.img}" class="w-full h-full object-cover"></div>
+    <div class="flex-1 min-w-0">
+      <div class="flex justify-between gap-2"><h4 class="font-bold text-sm truncate">${p.name}</h4><button onclick="del(${i})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></div>
+      <p class="text-xs text-gray-500">${fmt(p.price)} / dona</p>
+      <div class="flex items-center justify-between mt-2">
+        <div class="flex items-center bg-white rounded-full border">
+          <button onclick="chg(${i},-1)" class="w-8 h-8 rounded-full hover:bg-red-50 hover:text-red-500"><i class="fa-solid fa-minus text-xs"></i></button>
+          <span class="w-8 text-center font-bold text-sm">${n}</span>
+          <button onclick="chg(${i},1)" class="w-8 h-8 rounded-full hover:bg-brand-50 hover:text-brand-600"><i class="fa-solid fa-plus text-xs"></i></button>
+        </div>
+        <b class="text-brand-700 text-sm">${fmt(p.price*n)}</b>
+      </div>
+    </div>
+  </div>`}).join(""):`<div class="h-full grid place-items-center text-center text-gray-400"><div><i class="fa-solid fa-basket-shopping text-6xl mb-4 block"></i><p class="font-semibold">Savat bo'sh</p><p class="text-sm">Mahsulot qo'shib ko'ring</p></div></div>`;
+  $("total").textContent=fmt(ids.reduce((s,i)=>s+P[i].price*cart[i],0));
+}
+function toggleCart(open){
+  $("drawer").classList.toggle("translate-x-full",!open);
+  $("overlay").classList.toggle("hidden",!open);
+  document.body.style.overflow=open?"hidden":"";
+}
+function checkout(){
+  if(!Object.keys(cart).length)return toast("Savat bo'sh! Avval mahsulot qo'shing");
+  cart={};save();updateBadges();renderCart();toggleCart(false);toast("Buyurtmangiz qabul qilindi! Tez orada bog'lanamiz");
+}
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.remove("opacity-0","translate-y-4");clearTimeout(tt);tt=setTimeout(()=>t.classList.add("opacity-0","translate-y-4"),2200)}
+
+// Search
+function onSearch(e){q=e.target.value.trim().toLowerCase();$("search").value=$("searchM").value=e.target.value;onlySale=onlyWish=false;renderChips();renderGrid()}
+$("search").addEventListener("input",onSearch);$("searchM").addEventListener("input",onSearch);
+
+// Carousel
+const slides=[...document.querySelectorAll("#hero .slide")];let cur=0,timer;
+$("dots").innerHTML=slides.map((_,i)=>`<button onclick="go(${i})" class="h-2.5 rounded-full bg-white transition-all"></button>`).join("");
+function go(i){cur=(i+slides.length)%slides.length;slides.forEach((s,k)=>{s.classList.toggle("opacity-0",k!==cur);s.classList.toggle("pointer-events-none",k!==cur)});
+  [...$("dots").children].forEach((d,k)=>{d.className="h-2.5 rounded-full bg-white transition-all "+(k===cur?"w-8":"w-2.5 opacity-60")});reset()}
+function slide(d){go(cur+d)}
+function reset(){clearInterval(timer);timer=setInterval(()=>go(cur+1),5000)}
+
+go(0);renderChips();renderGrid();renderCart();updateBadges();
+document.addEventListener("keydown",e=>{if(e.key==="Escape")toggleCart(false)});
+</script>
+</body>
+</html>
